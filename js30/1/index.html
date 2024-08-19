@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" src="sounds/kick.wav"></audio>
+  <audio data-key="70" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" src="sounds/boom.wav"></audio>
+  <audio data-key="72" src="sounds/ride.wav"></audio>
+  <audio data-key="74" src="sounds/snare.wav"></audio>
+  <audio data-key="75" src="sounds/tom.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio>
+
+<script>
+    function playAudio(e) {
+        // looks for a single match (selector, not all) for something where the HTML audio data-key is the event's keycode
+        // keyCode is case sensitive!! also quotes needed because the html tags are strings
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+
+        // don't need the fcn to run if an invalid key is pressed
+        if (!audio) return;
+
+        const newAudio = new Audio(audio.src);
+        newAudio.play();
+
+        /* Original JS30 code:
+        audio.currentTime = 0;
+        audio.play();
+        // .play() won't play an audio element that's already going, so currentTime fakes it "rewinding"
+
+        This caused the audio to restart on every keypress, rather than layering. (e.g. pressing hihat repeatedly
+        would make it sound all jagged and cut off). By making a new Audio object everytime, the sounds can layer.
+        Definitely more inefficient but sounds a lot better.
+        */
+
+        key.classList.add('playing');
+
+    }
+
+    function removeTransition(e) {
+        // technically, there are multiple transition events that happen, and we only want this to run on one of them
+        if (e.propertyName !== 'transform') return;
+        console.log(this);
+        // "this" is the key pressed because addEventListener was called against the actual key
+        this.classList.remove('playing');
+    }
+
+
+    // gives us an array of all the keys on screen
+    const keys = document.querySelectorAll('.key');
+    console.log(keys);
+
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+    // keypress event is deprecated
+    // grabs keycode from whatever's pressed
+    window.addEventListener('keydown', playAudio);
+
+
+</script>
+
+
+</body>
+</html>
