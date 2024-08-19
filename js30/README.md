@@ -1,0 +1,1 @@
+These projects are from the Javascript 30 course by [Wes Bos](https://github.com/wesbos). Most assets (e.g. sound files) can be found there too.
