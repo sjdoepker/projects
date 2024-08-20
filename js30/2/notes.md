@@ -1,0 +1,5 @@
+- default rotation in CSS will rotate at the middle of the object (origin), but this can be altered
+- Origin determined by (x, y), so 100% sets it to 100% of the object's length (e.g. at the right side of the hand, in the middle of the clock)
+- used `transform: rotate(90deg);` to make 12 the default position for the hands
+- transition: all in CSS makes the move take time
+- setInterval(fcn, milliseconds): repeatedly calls a function with milliseconds of delay in between each call
