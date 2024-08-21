@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+  </div>
+
+  <!-- did you know i'm from saint louis (ish) -->
+  <img src="https://media.istockphoto.com/id/1162787633/photo/st-louis-missouri-usa-downtown-cityscape-on-the-mississippi-river-at-twilight.jpg?s=2048x2048&w=is&k=20&c=IGQHTv58KKfOO9zLU5eP-y5o61PEXngbF-1wXKp6Eww="
+  width="1200" height="800">
+
+  <style>
+
+    :root {
+        /* these are all the custom variables we've declared in our HTML above*/
+        --base: #12e8a4;
+        --spacing: 50px;
+        --blur: 10px;
+    }
+
+    /*
+      misc styles, nothing to do with CSS variables
+    */
+
+    
+    body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    input {
+      width: 100px;
+    }
+
+    img {
+        padding: var(--spacing);
+        /* blur is a function, so needs to be wrapped in blur() and then have the pixel amnt passed in */
+        filter: blur(var(--blur));
+        background: var(--base);
+    }
+
+    .hl {
+        color: var(--base);
+    }
+
+  </style>
+
+  <script>
+    const inputs = document.querySelectorAll(".controls input");
+
+    function handleUpdate() {
+        // if there is sizing (px/em/etc), we use it in setting the style; otherwise don't concatenate anything
+        const suffix = this.dataset.sizing || '';
+        
+        document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+
+    // we have both change and mouseMove listeners so the sliders change when dragged and not just when released
+    inputs.forEach(input => input.addEventListener("change", handleUpdate)); 
+    inputs.forEach(input => input.addEventListener("mousemove", handleUpdate)); 
+
+
+  </script>
+
+</body>
+</html>
