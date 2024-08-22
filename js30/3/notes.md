@@ -13,3 +13,5 @@ not being in px or em or whatever
 dataset takes all data attributes assigned to the object and packages them together
 
 note that you can also scope CSS variables to just be on a specific div (e.g. specifiy h2's base explicitly and it will win); lower/smaller scope overrides larger/higher scope
+
+(moved notes after this into a Notion document)
