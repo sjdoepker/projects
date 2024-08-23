@@ -15,8 +15,62 @@
       <li>or a state</li>
     </ul>
   </form>
+
 <script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    const cities = [];
+
+    // fetch returns a Promise: something that will eventually get returned from the fetch request
+    // ... is spread, breaks the giant array of data into its individual parts and only then pushes it into cities
+    fetch(endpoint).then((response) => {return response.json()}).then((data) => cities.push(...data));
+
+    function findMatches(target, locations) {
+        // if location (city/state) matches what was searched 
+        // REGEX TIME FORMAL LANGUAGES WIN
+        return locations.filter(location => {
+            // find "target" globally and case insensitive
+            const regex = new RegExp(target, "gi");
+            return location.city.match(regex) || location.state.match(regex);
+        });
+    }
+    
+    function numberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function showMatches() {
+        // DO NOT use array constructor (Array()) here, it creates an array with findMatches # of elements
+        const matches = findMatches(this.value, cities);
+        const html = matches.map(location => {
+            // highlighting the matching part of the word: we add this as part of the HTML
+            const regex = new RegExp(this.value, "gi");
+            const cityName = location.city.replace(regex, `<span class="hl">${this.value}</span>`);
+            const stateName = location.state.replace(regex, `<span class="hl">${this.value}</span>`);
+
+            // adding commas to the population number
+            const popFormatted = numberWithCommas(location.population);
+            return `
+                <li>
+                    <span class="name"> ${cityName}, ${stateName} </span>
+                    <span class="population"> ${popFormatted} </span>
+                </li>
+            `
+        }).join("");
+
+
+
+        suggestions.innerHTML = html;
+    }
+
+    // remember: . in front because it's a class name
+    const search = document.querySelector(".search");
+    const suggestions = document.querySelector(".suggestions");
+
+    search.addEventListener("change", showMatches);
+    search.addEventListener("keyup", showMatches);
+
+   
 
 </script>
 </body>
