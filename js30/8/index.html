@@ -21,6 +21,7 @@
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
+    let color = 0;
 
     function drawLine(e) {
         if (!isDrawing) return;
@@ -29,7 +30,9 @@
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
         ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.strokeStyle = `hsl(${color}, 100%, 50%)`;
         ctx.stroke();
+        color ++;
         // lastX = e.offsetX;
         // lastY = e.offsetY;
         [lastX, lastY] = [e.offsetX, e.offsetY];
