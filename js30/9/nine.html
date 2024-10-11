@@ -19,28 +19,72 @@
     }
 
     // Regular
+    console.log("this is a string");
 
     // Interpolated
+    console.log("this is a formatted string %s", "see?");
 
     // Styled
+    console.log("%c aren't words great?", "font-size:30px; background:blue; text-shadow:10px 10px 0 red");
 
     // warning!
+    console.warn("this is a warning, be careful");
 
     // Error :|
+    console.error("this is an error, something is wrong");
 
     // Info
+    console.info("just some helpful info");
 
     // Testing
+    const p = document.querySelector('p');
+    // only fires the error if the 1st parameter is False
+    console.assert(1===1, 'uh oh the laws of physics broke');
+    console.assert(p.classList.contains("best class"), "you've selected something wrong!");
 
     // clearing
+    // console.clear();
 
     // Viewing DOM Elements
+    // log shows the element itself
+    console.log(p);
+    // dir shows everything that lives on the element
+    console.dir(p);
 
     // Grouping together
+    console.clear();
+    dogs.forEach(dog => {
+        // or have this be groupCollapsed and it'll be collapsed by default
+        console.group(`${dog.name} info`);
+        console.log(`this dog's name is ${dog.name}`);
+        console.log(`they are ${dog.age} years old`);
+        console.log(`${dog.name} is ${dog.age * 7} years old in human years`);
+        console.groupEnd();
+    })
 
     // counting
+    // logs how many times you've logged a certain variable
+    console.count("day");
+    console.count("night");
+    console.count("night");
+    console.count("night");
+    console.count("day");
+    console.count("day");
+    console.count("day");
+    console.count("day");
+    console.count("night");
+    console.count("day");
 
     // timing
+    // must pass in the same string in time() and timeEnd()
+    console.time("data grabbing");
+    fetch("https://api.github.com/users/sjdoepker")
+        .then(data => data.json())
+        .then(data => {console.log(data)});
+    console.timeEnd("data grabbing");
+
+    // also this to make arrays look nice
+    console.table(dogs);
 
   </script>
 </body>
